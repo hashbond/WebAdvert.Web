@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.CognitoIdentityProvider;
+using Amazon.Extensions.CognitoAuthentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,9 @@ namespace WebAdvert
 {
     public class Startup
     {
+        //private Func<IServiceProvider, CognitoUserPool> cognitoUserPool;
+        //private Func<IServiceProvider, IAmazonCognitoIdentityProvider> cognitoIdentityProvider;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -23,9 +28,12 @@ namespace WebAdvert
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCognitoIdentity(config => {
+            //services.AddSingleton<IAmazonCognitoIdentityProvider>(cognitoIdentityProvider);
+            //services.AddSingleton<CognitoUserPool>(cognitoUserPool);
+            services.AddCognitoIdentity(config =>
+            {
                 config.Password = new Microsoft.AspNetCore.Identity.PasswordOptions
-                { 
+                {
                     RequireDigit = false,
                     RequiredLength = 6,
                     RequiredUniqueChars = 0,
@@ -34,6 +42,7 @@ namespace WebAdvert
                     RequireUppercase = false
                 };
             });
+
             services.AddControllersWithViews();
         }
 
